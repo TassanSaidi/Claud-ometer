@@ -42,15 +42,11 @@ function SessionsContent() {
 
   // Sync debounced query to URL
   useEffect(() => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (debouncedQuery) {
-      params.set('q', debouncedQuery);
-    } else {
-      params.delete('q');
-    }
-    const qs = params.toString();
-    router.replace(qs ? `/sessions?${qs}` : '/sessions', { scroll: false });
-  }, [debouncedQuery, router, searchParams]);
+    const url = debouncedQuery
+      ? `/sessions?q=${encodeURIComponent(debouncedQuery)}`
+      : '/sessions';
+    router.replace(url, { scroll: false });
+  }, [debouncedQuery, router]);
 
   if (isLoading || !sessions) {
     return (
